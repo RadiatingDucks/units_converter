@@ -4,3 +4,14 @@ import sqlite3
 
 db = sqlite3.connect('units_converter.db')
 
+cursor = db.cursor()
+
+#sql commands
+sql = ""
+
+cursor.execute(sql)
+
+print()
+
+db.close()
+
