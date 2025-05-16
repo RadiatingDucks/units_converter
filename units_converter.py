@@ -7,11 +7,13 @@ db = sqlite3.connect('units_converter.db')
 cursor = db.cursor()
 
 #sql commands
-sql = ""
+sql = "SELECT * FROM Units"
 
 cursor.execute(sql)
 
-print()
+info = cursor.fetchall()
+
+print(info)
 
 db.close()
 
