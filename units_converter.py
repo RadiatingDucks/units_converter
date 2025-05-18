@@ -1,4 +1,4 @@
-"""Unit Converter application with Database by Amy Lian 15/5/2025"""
+"""Unit Converter application with Database made by Amy Lian 15/5/2025"""
 
 #imports sqlite
 import sqlite3
@@ -16,20 +16,31 @@ def convert(num, unit1, unit2):
                     AND (unit2.unit_abbreviation = ? OR unit2.unit_name = ?)
                     AND unit1.unit_type = unit2.unit_type;"""
 
-    cursor.execute(convert_si, (num,unit1,unit1, unit2, unit2))
-
+    cursor.execute(convert_si, (num, unit1, unit1, unit2, unit2))
+    #fetching the answer :D
     info = cursor.fetchone()
-    
+    #prints the answer
     print(f"amount:{info}")
-
+    #closing the database
     db.close()
+
+def showAllUnits():
+    #hmmmmm what should I put here
+    print("hmmmmm what should I put here")
 
 if __name__ == "__main__":
 
     #input values from user
-    number = input("Please type your number: \n")
-    start_unit = input("Please type your starting unit: \n")
-    end_unit = input("Please enter the unit you want to convert to: \n")
+    while input:
+        try:
+            number = float(input("Please type your number: \n"))
+        except ValueError:
+            print("Please enter a valid value\n")
+            number = float(input("Please type your number: \n"))
+        break
+
+    start_unit = str(input("Please type your starting unit: \n"))
+    end_unit = str(input("Please enter the unit you want to convert to: \n"))
 
     #function
     convert(number, start_unit, end_unit)
