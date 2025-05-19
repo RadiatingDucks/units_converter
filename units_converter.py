@@ -24,13 +24,61 @@ def convert(num, unit1, unit2):
     #closing the database
     db.close()
 
+
+
+def is_it_valid(inputFromUser):
+    db = sqlite3.connect('units_converter.db')
+
+    cursor = db.cursor()
+
+    is_input_in_tables = """SELECT unit_name
+                            FROM Units
+                            WHERE (unit_name = ? OR unit_abbreviation = ?);"""
+    
+    cursor.execute(is_input_in_tables, (inputFromUser,inputFromUser))
+
+    answer = cursor.fetchone()
+
+    db.close()
+
+    if answer:
+        return(True)
+    else:
+        return(False)
+    
+
+
+"""
 def showAllUnits():
     #hmmmmm what should I put here
     print("hmmmmm what should I put here")
+    db = sqlite3.connect('units_converter.db')
+
+    cursor = db.cursor()
+
+    show_all = """"""SELECT unit_name, Unit_type.type_name
+                  FROM Units 
+                  JOIN Unit_type ON Units.unit_type = Unit_type.id 
+                  ORDER BY Unit_type.id;""""""
+    
+    cursor.execute(show_all)
+    
+    results = cursor.fetchall()
+
+    #prints the results
+    for value in results:
+        name_unit, type_unit = value.split()
+        
+    
+    db.close()
+
+"""
 
 if __name__ == "__main__":
 
     #input values from user
+
+    #If user types a non-float input
     while input:
         try:
             number = float(input("Please type your number: \n"))
@@ -39,9 +87,9 @@ if __name__ == "__main__":
             number = float(input("Please type your number: \n"))
         break
 
-    start_unit = str(input("Please type your starting unit: \n"))
-    end_unit = str(input("Please enter the unit you want to convert to: \n"))
-
+    start_unit = input("Please type your starting unit: \n").lower()
+    is_it_valid(start_unit)
+    end_unit = input("Please enter the unit you want to convert to: \n").lower()
     #function
     convert(number, start_unit, end_unit)
 
