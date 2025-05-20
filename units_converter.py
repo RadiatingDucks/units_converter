@@ -16,22 +16,35 @@ def convert(num, unit1, unit2):
                     AND (unit2.unit_abbreviation = ? OR unit2.unit_name = ?)
                     AND unit1.unit_type = unit2.unit_type;"""
 
+    #executing the convert_si with variables in order replacing the '?'s
     cursor.execute(convert_si, (num, unit1, unit1, unit2, unit2))
+
     #fetching the answer :D
     info = cursor.fetchone()
+
     #prints the answer
     print(f"amount:{info}")
+
     #closing the database
     db.close()
 
-
+unit1_type = None
 
 def is_it_valid(inputFromUser):
+    #allowing to modify unit1_type in the function
+    global unit1_type
+    
     db = sqlite3.connect('units_converter.db')
 
     cursor = db.cursor()
 
-    is_input_in_tables = """SELECT unit_name, Unit_type.id
+    #sql code for checking if input is a unit stored in the database
+    is_input_in_tables = """SELECT unit_name
+                            FROM Units
+                            WHERE (unit_name = ? OR unit_abbreviation = ?);"""
+    
+    #sql code for finding the type of unit
+    inputType = """SELECT Unit_type.id
                             FROM Units
                             JOIN Unit_type ON Units.unit_type = Unit_type.id 
                             WHERE (unit_name = ? OR unit_abbreviation = ?);"""
@@ -40,11 +53,20 @@ def is_it_valid(inputFromUser):
 
     answer = cursor.fetchone()
 
-    db.close()
 
     if answer:
+        #executing code which finds type of unit1
+        cursor.execute(inputType, (inputFromUser,inputFromUser))
+
+        #fetching the type of unit, getting it out of a turple, and storing it in a variable
+        for x in cursor.fetchone():
+            unit1_type = x
+        
+        db.close()
         return(True)
+        
     else:
+        db.close()
         return(False)
     
 
@@ -104,6 +126,8 @@ if __name__ == "__main__":
             break
         else:
             print("Please enter a valid unit\n")
+    
+    print(unit1_type)
     end_unit = input("Please enter the unit you want to convert to: \n").lower()
     #function
     convert(number, start_unit, end_unit)
