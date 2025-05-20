@@ -20,7 +20,8 @@ def convert(num, unit1, unit2):
     cursor.execute(convert_si, (num, unit1, unit1, unit2, unit2))
 
     #fetching the answer :D
-    info = cursor.fetchone()
+    for ans in cursor.fetchone():
+        info = ans
 
     #prints the answer
     print(f"amount:{info}")
