@@ -65,18 +65,26 @@ def is_it_valid(inputFromUser):
             unit_type = x
         
         db.close()
+        #returns boolean
         return(True)
         
     else:
         db.close()
+        #returns boolean
         return(False)
 
+#Function which checks if units are same type
 def is_it_the_same(type1, type2):
+    
+    #declaring global variables
     global unit1_type
     global unit2_type
+
     if unit1_type == unit2_type:
+        #returns boolean
         return(True)
     else: 
+        #returns boolean
         return(False)
 
 
@@ -140,7 +148,9 @@ def calc_units():
 
         start_unit = input("Please type your starting unit: \n").lower()
 
+        #checking if unit is valid
         if is_it_valid(start_unit) == True:
+            #storing unit type
             unit1_type = unit_type
             break
         else:
@@ -151,9 +161,13 @@ def calc_units():
 
         end_unit = input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
 
-        
+        #checking if unit is valid
         if is_it_valid(end_unit) == True:
+
+            #storing the unit type
             unit2_type = unit_type
+
+            #checking if units are the same with function
             if is_it_the_same(unit1_type, unit2_type):
                 break
             else:
@@ -164,7 +178,7 @@ def calc_units():
     #converting the input
     convert(number, start_unit, end_unit)
     
-
+#main
 if __name__ == "__main__":
     calc_units()
 
