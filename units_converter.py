@@ -77,15 +77,20 @@ def showAllUnits():
 if __name__ == "__main__":
 
     #input values from user
-
+    is_number = False
     #If user types a non-float input
-    while input:
+    while not is_number:
         try:
             number = float(input("Please type your number: \n"))
+            is_number = True
+            
+            #if number is zero
+            if number == 0:
+                print("Please enter a valid number\n")
+                is_number = False
         except ValueError:
             print("Please enter a valid value\n")
-            number = float(input("Please type your number: \n"))
-        break
+
 
     start_unit = input("Please type your starting unit: \n").lower()
     is_it_valid(start_unit)
