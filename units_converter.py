@@ -29,11 +29,11 @@ def convert(num, unit1, unit2):
     #closing the database
     db.close()
 
-unit1_type = None
+unit_type = None
 
 def is_it_valid(inputFromUser):
     #allowing to modify unit1_type in the function
-    global unit1_type
+    global unit_type
     
     db = sqlite3.connect('units_converter.db')
 
@@ -61,7 +61,7 @@ def is_it_valid(inputFromUser):
 
         #fetching the type of unit, getting it out of a turple, and storing it in a variable
         for x in cursor.fetchone():
-            unit1_type = x
+            unit_type = x
         
         db.close()
         return(True)
@@ -69,7 +69,15 @@ def is_it_valid(inputFromUser):
     else:
         db.close()
         return(False)
-    
+
+def is_it_the_same(type1, type2):
+    global unit1_type
+    global unit2_type
+    if unit1_type == unit2_type:
+        return(True)
+    else: 
+        return(False)
+
 
 
 """
@@ -103,14 +111,16 @@ if __name__ == "__main__":
     #input values from user
     is_number = False
     is_valid_input1 = False
+    is_valid_input2 = False
     #If user types a non-float input
     while not is_number:
+        print("ayyayayay")
         try:
             number = float(input("Please type your number: \n"))
 
             #breaking out of the while loop
             is_number = True
-
+            print("yay")
             #if number is zero
             if number == 0:
                 print("Please enter a valid number\n")
@@ -123,13 +133,28 @@ if __name__ == "__main__":
     while not is_valid_input1:
 
         start_unit = input("Please type your starting unit: \n").lower()
+
         if is_it_valid(start_unit) == True:
+            unit1_type = unit_type
             break
         else:
             print("Please enter a valid unit\n")
     
+    while not is_valid_input2:
+        end_unit = input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
+
+        
+        if is_it_valid(end_unit) == True:
+            unit2_type = unit_type
+            if is_it_the_same(unit1_type, unit2_type):
+                break
+            else:
+                print("Please use a unit that is the same type as the unit you want to convert")
+        else:
+            print("Please enter a valid unit\n")
+    
     print(unit1_type)
-    end_unit = input("Please enter the unit you want to convert to: \n").lower()
+    
     #function
     convert(number, start_unit, end_unit)
 
