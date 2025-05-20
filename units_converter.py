@@ -31,8 +31,9 @@ def is_it_valid(inputFromUser):
 
     cursor = db.cursor()
 
-    is_input_in_tables = """SELECT unit_name
+    is_input_in_tables = """SELECT unit_name, Unit_type.id
                             FROM Units
+                            JOIN Unit_type ON Units.unit_type = Unit_type.id 
                             WHERE (unit_name = ? OR unit_abbreviation = ?);"""
     
     cursor.execute(is_input_in_tables, (inputFromUser,inputFromUser))
@@ -78,22 +79,31 @@ if __name__ == "__main__":
 
     #input values from user
     is_number = False
+    is_valid_input1 = False
     #If user types a non-float input
     while not is_number:
         try:
             number = float(input("Please type your number: \n"))
+
+            #breaking out of the while loop
             is_number = True
-            
+
             #if number is zero
             if number == 0:
                 print("Please enter a valid number\n")
                 is_number = False
+
         except ValueError:
             print("Please enter a valid value\n")
 
+    #if user types a non-existent unit
+    while not is_valid_input1:
 
-    start_unit = input("Please type your starting unit: \n").lower()
-    is_it_valid(start_unit)
+        start_unit = input("Please type your starting unit: \n").lower()
+        if is_it_valid(start_unit) == True:
+            break
+        else:
+            print("Please enter a valid unit\n")
     end_unit = input("Please enter the unit you want to convert to: \n").lower()
     #function
     convert(number, start_unit, end_unit)
