@@ -29,6 +29,7 @@ def convert(num, unit1, unit2):
     #closing the database
     db.close()
 
+#variable that stores unit types
 unit_type = None
 
 def is_it_valid(inputFromUser):
@@ -106,21 +107,26 @@ def showAllUnits():
 
 """
 
-if __name__ == "__main__":
+#getting input, checking input then converting and giving output
+def calc_units():
 
-    #input values from user
+    #global variables
+    global unit1_type
+    global unit2_type
+    
+    #useful variables for detecting if user inputed correct type of answer
     is_number = False
     is_valid_input1 = False
     is_valid_input2 = False
+
     #If user types a non-float input
     while not is_number:
-        print("ayyayayay")
         try:
             number = float(input("Please type your number: \n"))
 
             #breaking out of the while loop
             is_number = True
-            print("yay")
+
             #if number is zero
             if number == 0:
                 print("Please enter a valid number\n")
@@ -129,7 +135,7 @@ if __name__ == "__main__":
         except ValueError:
             print("Please enter a valid value\n")
 
-    #if user types a non-existent unit
+    #if user types a non-existent unit as start_unit
     while not is_valid_input1:
 
         start_unit = input("Please type your starting unit: \n").lower()
@@ -140,7 +146,9 @@ if __name__ == "__main__":
         else:
             print("Please enter a valid unit\n")
     
+    #if user types a non-existent unit as start_unit
     while not is_valid_input2:
+
         end_unit = input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
 
         
@@ -153,8 +161,11 @@ if __name__ == "__main__":
         else:
             print("Please enter a valid unit\n")
     
-    print(unit1_type)
-    
-    #function
+    #converting the input
     convert(number, start_unit, end_unit)
+    
+
+if __name__ == "__main__":
+    calc_units()
+
 
