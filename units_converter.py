@@ -1,7 +1,9 @@
 """Unit Converter application with Database made by Amy Lian 15/5/2025"""
 
-#imports sqlite
+#imports
 import sqlite3
+
+import sys
 
 def convert(num, unit1, unit2):
     #connecting database
@@ -120,7 +122,7 @@ def showAllUnits():
 def menu():
 
     print("\nGreetings! This is a Unit Converter\nWhat would you like to do today?\n")
-    menu_answer = input("(a) Convert Units \n(b) See all units\n(c) Surprise Me!\n\n").lower()
+    menu_answer = cool_input("(a) Convert Units \n(b) See all units\n(c) Surprise Me!\n\n").lower()
 
     if menu_answer == "a":
         print("yay")
@@ -133,6 +135,14 @@ def menu():
     
     else:
         print("please choose an answer because you made Barry sad.")
+
+
+def cool_input(prompt):
+    user_input = input(prompt).lower().strip()
+    if user_input == "exit":
+        print("\nExiting Program...thank you for using the Units Converter!\n")
+        sys.exit()
+    return user_input
 
 
 #getting input, checking input then converting and giving output
@@ -150,7 +160,7 @@ def calc_units():
     #If user types a non-float input
     while not is_number:
         try:
-            number = float(input("Please type your number: \n"))
+            number = float(cool_input("Please type your number: \n"))
 
             #breaking out of the while loop
             is_number = True
@@ -166,7 +176,7 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input1:
 
-        start_unit = input("Please type your starting unit: \n").lower()
+        start_unit = cool_input("Please type your starting unit: \n").lower()
 
         #checking if unit is valid
         if is_it_valid(start_unit) == True:
@@ -179,7 +189,7 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input2:
 
-        end_unit = input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
+        end_unit = cool_input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
 
         #checking if unit is valid
         if is_it_valid(end_unit) == True:
