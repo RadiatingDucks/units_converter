@@ -89,31 +89,33 @@ def is_it_the_same(type1, type2):
 
 
 
-"""
+
 def showAllUnits():
-    #hmmmmm what should I put here
-    print("hmmmmm what should I put here")
+
+    global unit2_type
+
     db = sqlite3.connect('units_converter.db')
 
     cursor = db.cursor()
 
-    show_all = """"""SELECT unit_name, Unit_type.type_name
+    show_all = """SELECT unit_name, Unit_type.type_name
                   FROM Units 
-                  JOIN Unit_type ON Units.unit_type = Unit_type.id 
-                  ORDER BY Unit_type.id;""""""
+                  JOIN Unit_type ON Units.unit_type = Unit_type.id
+                  WHERE Unit_type.id = ?
+                  ORDER BY Unit_type.id;"""
     
-    cursor.execute(show_all)
+    cursor.execute(show_all, (unit2_type,))
     
     results = cursor.fetchall()
 
     #prints the results
-    for value in results:
-        name_unit, type_unit = value.split()
+    for value, value1 in results:
+        print(f"Unit: {value} | Type: {value1}")
         
     
     db.close()
 
-"""
+
 
 #getting input, checking input then converting and giving output
 def calc_units():
@@ -181,5 +183,6 @@ def calc_units():
 #main
 if __name__ == "__main__":
     calc_units()
+    showAllUnits()
 
 
