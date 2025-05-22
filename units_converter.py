@@ -116,6 +116,24 @@ def showAllUnits():
     db.close()
 
 
+#user menu
+def menu():
+
+    print("\nGreetings! This is a Unit Converter\nWhat would you like to do today?\n")
+    menu_answer = input("(a) Convert Units \n(b) See all units\n(c) Surprise Me!\n\n").lower()
+
+    if menu_answer == "a":
+        print("yay")
+    
+    elif menu_answer == "b":
+        print("yipeeee")
+    
+    elif menu_answer == "c":
+        print("boombaclat")
+    
+    else:
+        print("please choose an answer because you made Barry sad.")
+
 
 #getting input, checking input then converting and giving output
 def calc_units():
@@ -182,6 +200,7 @@ def calc_units():
     
 #main
 if __name__ == "__main__":
+    menu()
     calc_units()
     showAllUnits()
 
