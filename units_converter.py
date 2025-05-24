@@ -135,8 +135,27 @@ def menu():
         print("boombaclat")
     
     elif menu_answer == "a":
-        print("yayayayyaay")
-    
+        print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!" \
+        "\nHere is the basic walkthrough on how to use it:\n" \
+        "\n1. functions" \
+        "\n (a) typing 'menu' - returns to the menu" \
+        "\n (b) typing 'exit' - stops the program\n" \
+        "\n2. Converting units" \
+        "\n (a) To convert units, go to menu, then type 'a'" \
+        "\n (b) You can type the full name of a unit or its abbreviation" \
+        "\n (c) Only units of the same type can be converted" \
+        "\n     i. metres can be converted to kilometres" \
+        "\n     ii. metres cannot be converted to cubed centimetres" \
+        "\n (d) Units of area and volume are usually expressed with 'square' or 'cube'" \
+        "\n     i. inch^2 = squared inch" \
+        "\n     ii. milimetre^3 = cube milimetre\n" \
+        "\n3. List of all units can be found by going into menu, then typing 'c'\n" \
+        "\nHope you enjoy using this program! ")
+        going_back = cool_input("type menu to go back or exit to stop the program: ")
+        if going_back == "menu":
+            print("\nTeleporting to menu...\n")
+
+        
     else:
         print("please choose an answer because you made Barry sad.")
 
@@ -147,7 +166,10 @@ def cool_input(prompt):
     if user_input == "exit":
         print("\nExiting Program...thank you for using the Units Converter!\n")
         sys.exit()
-    return user_input
+    elif user_input == "menu":
+        menu()
+    else:
+        return user_input
 
 
 #getting input, checking input then converting and giving output
