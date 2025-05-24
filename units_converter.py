@@ -122,19 +122,24 @@ def showAllUnits():
 def menu():
 
     print("\nGreetings! This is a Unit Converter\nWhat would you like to do today?\n")
-    menu_answer = cool_input("(a) Convert Units \n(b) See all units\n(c) Surprise Me!\n\n").lower()
+    menu_answer = cool_input("(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Surprise Me!\n\n")
 
-    if menu_answer == "a":
-        print("yay")
-    
-    elif menu_answer == "b":
-        print("yipeeee")
+    if menu_answer == "b":
+        calc_units()
+        showAllUnits()
     
     elif menu_answer == "c":
+        print("yipeeee")
+    
+    elif menu_answer == "d":
         print("boombaclat")
+    
+    elif menu_answer == "a":
+        print("yayayayyaay")
     
     else:
         print("please choose an answer because you made Barry sad.")
+
 
 
 def cool_input(prompt):
@@ -211,7 +216,5 @@ def calc_units():
 #main
 if __name__ == "__main__":
     menu()
-    calc_units()
-    showAllUnits()
 
 
