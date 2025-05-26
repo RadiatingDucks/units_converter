@@ -5,6 +5,8 @@ import sqlite3
 
 import sys
 
+
+
 def convert(num, unit1, unit2):
     #connecting database
     db = sqlite3.connect('units_converter.db')
@@ -31,8 +33,12 @@ def convert(num, unit1, unit2):
     #closing the database
     db.close()
 
+
 #variable that stores unit types
 unit_type = None
+
+
+
 
 def is_it_valid(inputFromUser):
     #allowing to modify unit1_type in the function
@@ -75,6 +81,9 @@ def is_it_valid(inputFromUser):
         #returns boolean
         return(False)
 
+
+
+
 #Function which checks if units are same type
 def is_it_the_same(type1, type2):
     
@@ -92,29 +101,48 @@ def is_it_the_same(type1, type2):
 
 
 
-def showAllUnits():
-
-    global unit2_type
+def showAllUnits(typeOfUnit):
 
     db = sqlite3.connect('units_converter.db')
 
     cursor = db.cursor()
 
-    show_all = """SELECT unit_name, Unit_type.type_name
-                  FROM Units 
-                  JOIN Unit_type ON Units.unit_type = Unit_type.id
-                  ORDER BY Unit_type.id;"""
-    
-    cursor.execute(show_all)
-    
-    results = cursor.fetchall()
+    if typeOfUnit == 7:
 
-    #prints the results
-    for value, value1 in results:
-        print(f"Unit: {value}    | Type: {value1}")
+
+        show_all = """SELECT unit_name, Unit_type.type_name
+                    FROM Units 
+                    JOIN Unit_type ON Units.unit_type = Unit_type.id
+                    ORDER BY Unit_type.id;"""
+    
+        cursor.execute(show_all)
+        
+        results = cursor.fetchall()
+
+        #prints the results
+        for value, value1 in results:
+            print(f"Unit: {value}    | Type: {value1}")
+    
+    else:
+        show_some = """SELECT unit_name, Unit_type.type_name
+                    FROM Units 
+                    JOIN Unit_type ON Units.unit_type = Unit_type.id
+                    WHERE Unit_type.id = ?
+                    ORDER BY Unit_type.id;"""
+    
+        cursor.execute(show_some, (typeOfUnit,))
+        
+        results = cursor.fetchall()
+
+        #prints the results
+        for value, value1 in results:
+            print(f"Unit: {value}    | Type: {value1}")
         
     
     db.close()
+
+
+
 
 
 #user menu
@@ -130,7 +158,7 @@ def menu():
         menu()
     
     elif menu_answer == "c":
-        showAllUnits()
+        showAllUnits(7)
         menu()
     
     elif menu_answer == "d":
@@ -218,7 +246,7 @@ def calc_units():
             if is_it_the_same(unit1_type, unit2_type):
                 break
             else:
-                print("Please use a unit that is the same type as the unit you want to convert")
+                print("\nPlease use a unit that is the same type as the unit you want to convert\n")
         else:
             print("\nPlease enter a valid unit\n")
     
