@@ -103,16 +103,15 @@ def showAllUnits():
     show_all = """SELECT unit_name, Unit_type.type_name
                   FROM Units 
                   JOIN Unit_type ON Units.unit_type = Unit_type.id
-                  WHERE Unit_type.id = ?
                   ORDER BY Unit_type.id;"""
     
-    cursor.execute(show_all, (unit2_type,))
+    cursor.execute(show_all)
     
     results = cursor.fetchall()
 
     #prints the results
     for value, value1 in results:
-        print(f"Unit: {value} | Type: {value1}")
+        print(f"Unit: {value}    | Type: {value1}")
         
     
     db.close()
@@ -121,35 +120,26 @@ def showAllUnits():
 #user menu
 def menu():
 
-    print("\nGreetings! This is a Unit Converter\nWhat would you like to do today?\n")
-    menu_answer = cool_input("(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Surprise Me!\n\n")
+    #variable for loop for user input
+    menu_loop = False
+
+    menu_answer = cool_input("\n(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Surprise Me!\n\n")
 
     if menu_answer == "b":
         calc_units()
-        showAllUnits()
+        menu()
     
     elif menu_answer == "c":
-        print("yipeeee")
+        showAllUnits()
+        menu()
     
     elif menu_answer == "d":
         print("boombaclat")
     
     elif menu_answer == "a":
-        print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!" \
-        "\nHere is the basic walkthrough on how to use it:\n" \
-        "\n1. functions" \
-        "\n (a) typing 'menu' - returns to the menu" \
-        "\n (b) typing 'exit' - stops the program\n" \
-        "\n2. Converting units" \
-        "\n (a) To convert units, go to menu, then type 'a'" \
-        "\n (b) You can type the full name of a unit or its abbreviation" \
-        "\n (c) Only units of the same type can be converted" \
-        "\n     i. metres can be converted to kilometres" \
-        "\n     ii. metres cannot be converted to cubed centimetres" \
-        "\n (d) Units of area and volume are usually expressed with 'square' or 'cube'" \
-        "\n     i. inch^2 = squared inch" \
-        "\n     ii. milimetre^3 = cube milimetre\n" \
-        "\n3. List of all units can be found by going into menu, then typing 'c'\n" \
+        print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!\n" \
+        "\nTyping 'menu' will get you to menu, and typing 'exit' will stop the program.\n" \
+        "\nYou can only convert units of the same type (length cannot be converted into area!)" \
         "\nHope you enjoy using this program! ")
         going_back = cool_input("type menu to go back or exit to stop the program: ")
         if going_back == "menu":
@@ -157,7 +147,7 @@ def menu():
 
         
     else:
-        print("please choose an answer because you made Barry sad.")
+        print("please choose a valid answer because you made Barry sad.")
 
 
 
@@ -194,11 +184,11 @@ def calc_units():
 
             #if number is zero
             if number == 0:
-                print("Please enter a valid number\n")
+                print("\nPlease enter a valid number\n")
                 is_number = False
 
         except ValueError:
-            print("Please enter a valid value\n")
+            print("\nPlease enter a valid value\n")
 
     #if user types a non-existent unit as start_unit
     while not is_valid_input1:
@@ -211,7 +201,7 @@ def calc_units():
             unit1_type = unit_type
             break
         else:
-            print("Please enter a valid unit\n")
+            print("\nPlease enter a valid unit\n")
     
     #if user types a non-existent unit as start_unit
     while not is_valid_input2:
@@ -230,13 +220,18 @@ def calc_units():
             else:
                 print("Please use a unit that is the same type as the unit you want to convert")
         else:
-            print("Please enter a valid unit\n")
+            print("\nPlease enter a valid unit\n")
     
     #converting the input
     convert(number, start_unit, end_unit)
+    menu()
     
 #main
 if __name__ == "__main__":
+
+    #informs user of this program   
+    print("\nGreetings! This is a Unit Converter\nWhat would you like to do today?")
+    #activates the menu
     menu()
 
 
