@@ -28,7 +28,7 @@ def convert(num, unit1, unit2):
         info = ans
 
     #prints the answer
-    print(f"amount:{info}")
+    print(f"{num} {unit1} is {info} {unit2}")
 
     #closing the database
     db.close()
@@ -153,29 +153,37 @@ def menu():
 
     menu_answer = cool_input("\n(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Surprise Me!\n\n")
 
-    if menu_answer == "b":
-        calc_units()
-        menu()
-    
-    elif menu_answer == "c":
-        showAllUnits(7)
-        menu()
-    
-    elif menu_answer == "d":
-        print("boombaclat")
-    
-    elif menu_answer == "a":
-        print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!\n" \
-        "\nTyping 'menu' will get you to menu, and typing 'exit' will stop the program.\n" \
-        "\nYou can only convert units of the same type (length cannot be converted into area!)" \
-        "\nHope you enjoy using this program! ")
-        going_back = cool_input("type menu to go back or exit to stop the program: ")
-        if going_back == "menu":
-            print("\nTeleporting to menu...\n")
+    while not menu_loop:
+        if menu_answer == "b":
+            calc_units()
+            menu()
+            menu_loop = True
+        
+        elif menu_answer == "c":
+            showAllUnits(7)
+            menu()
+            menu_loop = True
+        
+        elif menu_answer == "d":
+            print("boombaclat")
+            menu_loop = True
+        
+        elif menu_answer == "a":
+            menu_loop = True
+            print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!\n" \
+            "\nTyping 'menu' will get you to menu, and typing 'exit' will stop the program.\n" \
+            "\nYou can only convert units of the same type (length cannot be converted into area!)" \
+            "\nHope you enjoy using this program! ")
+            going_back = cool_input("\ntype menu to go back or exit to stop the program: ")
+            if going_back == "menu":
+                print("\nTeleporting to menu...\n")
+
+            
+        else:
+            print("\nplease choose a valid answer because you made Barry sad.")
+            menu()
 
         
-    else:
-        print("please choose a valid answer because you made Barry sad.")
 
 
 
