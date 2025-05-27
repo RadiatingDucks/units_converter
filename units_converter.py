@@ -201,6 +201,14 @@ def cool_input(prompt):
         return user_input
 
 
+def history(unit1, unit2, inputNum, outputNum):
+
+    history_list = []
+
+    history_list.append(a)
+    
+
+
 #getting input, checking input then converting and giving output
 def calc_units():
 
@@ -232,7 +240,9 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input1:
 
-        start_unit = cool_input("Please type your starting unit: \n").lower()
+        print("Suggestions:")
+        
+        start_unit = cool_input("Please type your starting unit: \n")
 
         #checking if unit is valid
         if is_it_valid(start_unit) == True:
@@ -245,7 +255,9 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input2:
 
-        end_unit = cool_input(f"Please enter the unit you want to convert {start_unit} to: \n").lower()
+        print("\nHere are some units you can use:\n")
+        showAllUnits(unit1_type)
+        end_unit = cool_input(f"Please enter the unit you want to convert {start_unit} to: \n")
 
         #checking if unit is valid
         if is_it_valid(end_unit) == True:
