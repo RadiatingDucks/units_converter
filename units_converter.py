@@ -28,7 +28,7 @@ def convert(num, unit1, unit2):
         info = ans
 
     #prints the answer
-    print(f"{num} {unit1} is {info} {unit2}")
+    print(f"\n{num} {unit1} is {info} {unit2}")
 
     #closing the database
     db.close()
@@ -155,18 +155,21 @@ def menu():
 
     while not menu_loop:
         if menu_answer == "b":
+            menu_loop = True
             calc_units()
             menu()
-            menu_loop = True
+            
         
         elif menu_answer == "c":
+            menu_loop = True
             showAllUnits(7)
             menu()
-            menu_loop = True
+            
         
         elif menu_answer == "d":
-            print("boombaclat")
             menu_loop = True
+            print("boombaclat")
+            
         
         elif menu_answer == "a":
             menu_loop = True
