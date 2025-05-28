@@ -103,6 +103,11 @@ def is_it_the_same(type1, type2):
         return(False)
 
 
+
+
+
+
+
 #the main function of showAllUnits(typeOfUnit) is to show units with their type
 
 #it takes in the parameter typeOfUnit, which has 3 significant uses
@@ -198,22 +203,28 @@ def menu():
     #variable for loop for user input
     menu_loop = False
 
-    menu_answer = cool_input("\n(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Surprise Me!\n\n")
+    menu_answer = cool_input("\n(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Conversion history \n(e) Exit\n\n")
 
     while not menu_loop:
         if menu_answer == "b":
+
+            #stopping the loop that was catching the invalid inputs
             menu_loop = True
             calc_units()
             menu()
             
         
         elif menu_answer == "c":
+
+            #stopping the loop that was catching the invalid inputs
             menu_loop = True
             showAllUnits(7)
             menu()
             
         
         elif menu_answer == "d":
+
+            #stopping the loop that was catching the invalid inputs
             menu_loop = True
             print("boombaclat")
             #testing history
@@ -222,14 +233,34 @@ def menu():
             
         
         elif menu_answer == "a":
+
+            #stopping the loop that was catching the invalid inputs
             menu_loop = True
+
+            #printing the instructions on how to use this application
             print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!\n" \
             "\nTyping 'menu' will get you to menu, and typing 'exit' will stop the program.\n" \
             "\nYou can only convert units of the same type (length cannot be converted into area!)" \
             "\nHope you enjoy using this program! ")
-            going_back = cool_input("\ntype menu to go back or exit to stop the program: ")
-            if going_back == "menu":
-                print("\nTeleporting to menu...\n")
+
+            #variuable for the while loop to work
+            valid_ans = False
+
+            #loop to catch invalid answers
+            while not valid_ans:
+                #input for user to go back to menu or stop the program
+                going_back = cool_input("\ntype menu to go back or exit to stop the program: ")
+
+                #if user did not read the sentence above properly
+                if going_back != "menu" or "exit":
+
+                    #asking the user to try again
+                    going_back = cool_input("\nPlease type menu to go back or exit to stop the program:")
+            
+
+        elif menu_answer == "e":
+            print("\nExiting Program...thank you for using the Units Converter!\n")
+            sys.exit()
 
             
         else:
