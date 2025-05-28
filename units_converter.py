@@ -5,6 +5,8 @@ import sqlite3
 
 import sys
 
+import random
+
 
 
 def convert(num, unit1, unit2):
@@ -29,6 +31,8 @@ def convert(num, unit1, unit2):
 
     #prints the answer
     print(f"\n{num} {unit1} is {info} {unit2}")
+
+    history(unit1, unit2, num, info)
 
     #closing the database
     db.close()
@@ -99,7 +103,20 @@ def is_it_the_same(type1, type2):
         return(False)
 
 
+#the main function of showAllUnits(typeOfUnit) is to show units with their type
 
+#it takes in the parameter typeOfUnit, which has 3 significant uses
+
+# if typeOfUnit is 1-6, each number represents a unit type in the SQL tables. The function will
+# then call all rows with that unit type and print it. This is useful because it suggests
+# the second unit the user can input since the second input is limited by the type of the first 
+# unit the user inputted
+
+# if typeOfUnit is 7, all units with their type will be inputted.
+# this is for the option 'show all units' in menu
+
+# if typeOfUnit is 8, 5 randomly selected units will be printed. This is for suggesting units the 
+# user can use for the first input unit
 
 def showAllUnits(typeOfUnit):
 
@@ -107,8 +124,8 @@ def showAllUnits(typeOfUnit):
 
     cursor = db.cursor()
 
-    if typeOfUnit == 7:
-
+    #
+    if typeOfUnit >= 7:
 
         show_all = """SELECT unit_name, Unit_type.type_name
                     FROM Units 
@@ -119,9 +136,39 @@ def showAllUnits(typeOfUnit):
         
         results = cursor.fetchall()
 
-        #prints the results
-        for value, value1 in results:
-            print(f"Unit: {value}    | Type: {value1}")
+        #this is a list with all units
+        #it stores smaller lists of units with their type
+        unit_list = []
+
+            #this is checking if the typeOfUnit is 8, which means only 5 random units are needed.\
+            #this is used to suggest units to the user
+        if typeOfUnit == 8:
+
+            #prints the results
+            for value, value1 in results:
+                #making a temporary list with the unit name and type to store in another bigger list
+                temporary_list = [value, value1]
+
+                #adding the temporary list to the bigger unit_list
+                unit_list.append(temporary_list)
+
+            #selecting k random samples of data(aka units) from unit_list
+            random_sample = random.sample(unit_list, k=5)
+
+            #printing the selections out for user to see
+            print(random_sample)
+
+        #if the typeOfUnit is 7, which signifies that all units need to be printed out
+        else:
+
+            #prints the results
+            for value, value1 in results:
+
+                print(f"Unit: {value}    | Type: {value1}")
+    
+        typeOfUnit == 8
+
+
     
     else:
         show_some = """SELECT unit_name, Unit_type.type_name
@@ -169,6 +216,9 @@ def menu():
         elif menu_answer == "d":
             menu_loop = True
             print("boombaclat")
+            #testing history
+            print(history_dict)
+            print("ayay")
             
         
         elif menu_answer == "a":
@@ -201,11 +251,34 @@ def cool_input(prompt):
         return user_input
 
 
+# the function history(unit1, unit2, inputNum, outputNum) stores the past conversions the user
+# have done 
+
+# it refreshes everytime the program runs 
+
+# it uses dictionaries to store past conversions, with the keys being a number and the values being
+# a list of the units the user used, the number they inputted, and the number that was outputted
+
+#this is the key for dictionary
+counting_number = 1
+
+#this is the dictionary
+history_dict = {}
+
 def history(unit1, unit2, inputNum, outputNum):
 
-    history_list = []
+    global counting_number
 
-    history_list.append(a)
+    #putting the data in a list
+    history_list = [unit1, unit2, inputNum, outputNum]
+
+    #putting the data into the dictionary
+    history_dict[counting_number] = history_list
+
+    #making sure the key for the dictionary don't overlap
+    counting_number += 1
+
+
     
 
 
@@ -241,7 +314,7 @@ def calc_units():
     while not is_valid_input1:
 
         print("Suggestions:")
-        
+        showAllUnits(8)
         start_unit = cool_input("Please type your starting unit: \n")
 
         #checking if unit is valid
@@ -257,7 +330,7 @@ def calc_units():
 
         print("\nHere are some units you can use:\n")
         showAllUnits(unit1_type)
-        end_unit = cool_input(f"Please enter the unit you want to convert {start_unit} to: \n")
+        end_unit = cool_input(f"\nPlease enter the unit you want to convert {start_unit} to: \n")
 
         #checking if unit is valid
         if is_it_valid(end_unit) == True:
