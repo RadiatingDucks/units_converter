@@ -7,6 +7,8 @@ import sys
 
 import random
 
+import difflib
+
 
 
 def convert(num, unit1, unit2):
@@ -241,7 +243,7 @@ def menu():
             menu_loop = True
 
             #printing the instructions on how to use this application
-            print("\nThis is a units converter, and it can convert units of length, area, volume, time, mass, and temperature!\n" \
+            print("\nThis is a units converter, and it can convert units of length, area, volume, time, andf mass!\n" \
             "\nTyping 'menu' will get you to menu, and typing 'exit' will stop the program.\n" \
             "\nYou can only convert units of the same type (length cannot be converted into area!)" \
             "\nHope you enjoy using this program! ")
@@ -315,7 +317,37 @@ def history(unit1, unit2, inputNum, outputNum):
 
 
 def didYouMean(inputUnit):
-    pass
+    db = sqlite3.connect('units_converter.db')
+
+    cursor = db.cursor()
+
+    code = """SELECT unit_name 
+              FROM Units"""
+    
+    cursor.execute(code)
+
+    unit_list = cursor.fetchall()
+    
+    new_list = []
+
+    for sub_list in unit_list:
+        for unit in sub_list:
+            new_list.append(unit)
+
+    print(new_list)
+
+    suggestions = difflib.get_close_matches(inputUnit, new_list, n=5, cutoff= 0.6)
+
+    if len(suggestions) != 0:
+
+        print("\nDid you mean:")
+        for unit in suggestions:
+            print(" - " + unit )
+    else:
+        print("\nNo suggestions found D:")
+
+
+    db.close()
 
 
 #getting input, checking input then converting and giving output
@@ -368,6 +400,7 @@ def calc_units():
             break
         else:
             print("\nPlease enter a valid unit\n")
+            didYouMean(start_unit)
     
     didIthappen2 = False
 
