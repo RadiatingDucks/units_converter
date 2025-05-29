@@ -232,8 +232,12 @@ def menu():
 
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
-            #testing history
-            print(history_dict)
+
+            print("\nHistory\n")
+
+            for key, information in history_dict.items():
+                print(str(key) + " | " + information[0] + " | " + information[1] + " | " + str(information[2]) + " | " + str(information[3]))
+
             menu()
             
         
