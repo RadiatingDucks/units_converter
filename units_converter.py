@@ -30,7 +30,7 @@ def convert(num, unit1, unit2):
         info = ans
 
     #prints the answer
-    print(f"\n{num} {unit1}(s) equal to {info} {unit2}(s)!")
+    print(f"\n{num} {unit1}(s) is equal to {info} {unit2}(s)!")
 
     history(unit1, unit2, num, info)
 
@@ -312,7 +312,10 @@ def history(unit1, unit2, inputNum, outputNum):
     #making sure the key for the dictionary don't overlap
     counting_number += 1
 
-    
+
+
+def didYouMean(inputUnit):
+    pass
 
 
 #getting input, checking input then converting and giving output
@@ -343,11 +346,19 @@ def calc_units():
         except ValueError:
             print("\nPlease enter a valid value\n")
 
+    #variable that stops the while loop below from printing again and again
+    didIthappen = False
+
     #if user types a non-existent unit as start_unit
     while not is_valid_input1:
 
-        print("\nSuggestions:")
-        showAllUnits(8)
+        if didIthappen == False:
+            #printing suggestions for units
+            print("\nSuggestions:")
+            showAllUnits(8)
+            #making the variable false so suggestions don't show up again
+            didIthappen = True
+        
         start_unit = cool_input("\nPlease type the unit you want to convert: \n")
 
         #checking if unit is valid
@@ -358,11 +369,18 @@ def calc_units():
         else:
             print("\nPlease enter a valid unit\n")
     
+    didIthappen2 = False
+
     #if user types a non-existent unit as start_unit
     while not is_valid_input2:
 
-        print(f"\nHere are some units you can convert {start_unit} to:\n")
-        showAllUnits(unit1_type)
+        if didIthappen2 == False:
+            #printing suggestions for units
+            print(f"\nHere are some units you can convert {start_unit} to:\n")
+            showAllUnits(unit1_type)
+            #making the variable false so suggestions don't show up again
+            didIthappen2 = True
+
         end_unit = cool_input(f"\nPlease enter the unit you want to convert {start_unit} to: \n")
 
         #checking if unit is valid
