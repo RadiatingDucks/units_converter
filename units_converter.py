@@ -30,7 +30,7 @@ def convert(num, unit1, unit2):
         info = ans
 
     #prints the answer
-    print(f"\n{num} {unit1} is {info} {unit2}")
+    print(f"\n{num} {unit1}(s) equal to {info} {unit2}(s)!")
 
     history(unit1, unit2, num, info)
 
@@ -120,7 +120,7 @@ def is_it_the_same(type1, type2):
 # if typeOfUnit is 7, all units with their type will be inputted.
 # this is for the option 'show all units' in menu
 
-# if typeOfUnit is 8, 5 randomly selected units will be printed. This is for suggesting units the 
+# if typeOfUnit is 8, five randomly selected units will be printed. This is for suggesting units the 
 # user can use for the first input unit
 
 def showAllUnits(typeOfUnit):
@@ -160,8 +160,12 @@ def showAllUnits(typeOfUnit):
             #selecting k random samples of data(aka units) from unit_list
             random_sample = random.sample(unit_list, k=5)
 
-            #printing the selections out for user to see
-            print(random_sample)
+            #This is to remove the brackets and output the suggestions neatly
+
+            #this removes the values from the random_sample
+            for theUnit, theType in random_sample:
+                    print(f"Unit: {theUnit} | Type: {theType}")
+
 
         #if the typeOfUnit is 7, which signifies that all units need to be printed out
         else:
@@ -226,10 +230,9 @@ def menu():
 
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
-            print("boombaclat")
             #testing history
             print(history_dict)
-            print("ayay")
+            menu()
             
         
         elif menu_answer == "a":
@@ -309,7 +312,6 @@ def history(unit1, unit2, inputNum, outputNum):
     #making sure the key for the dictionary don't overlap
     counting_number += 1
 
-
     
 
 
@@ -328,7 +330,7 @@ def calc_units():
     #If user types a non-float input
     while not is_number:
         try:
-            number = float(cool_input("Please type your number: \n"))
+            number = float(cool_input("\nPlease type the number of measurement you want to convert: \n"))
 
             #breaking out of the while loop
             is_number = True
@@ -344,9 +346,9 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input1:
 
-        print("Suggestions:")
+        print("\nSuggestions:")
         showAllUnits(8)
-        start_unit = cool_input("Please type your starting unit: \n")
+        start_unit = cool_input("\nPlease type the unit you want to convert: \n")
 
         #checking if unit is valid
         if is_it_valid(start_unit) == True:
@@ -359,7 +361,7 @@ def calc_units():
     #if user types a non-existent unit as start_unit
     while not is_valid_input2:
 
-        print("\nHere are some units you can use:\n")
+        print(f"\nHere are some units you can convert {start_unit} to:\n")
         showAllUnits(unit1_type)
         end_unit = cool_input(f"\nPlease enter the unit you want to convert {start_unit} to: \n")
 
