@@ -84,11 +84,12 @@ def is_it_valid(inputFromUser):
     
     cursor.execute(is_input_in_tables, (inputFromUser,inputFromUser))
 
+    #fetching the answewr
     answer = cursor.fetchone()
 
-
+    #this is to check if answer is None or an actual unit
     if answer:
-        #executing code which finds type of unit1
+        #executing code which finds type of unit
         cursor.execute(inputType, (inputFromUser,inputFromUser))
 
         #fetching the type of unit, getting it out of a turple, and storing it in a variable
@@ -96,18 +97,23 @@ def is_it_valid(inputFromUser):
             unit_type = x
         
         db.close()
-        #returns boolean
+        #returns boolean which means the unit is valid
         return(True)
         
     else:
         db.close()
-        #returns boolean
+        #returns boolean false which means the unit is invalid
         return(False)
 
 
 
 
+
+
+
 #Function which checks if units are same type
+#This is so the user will not convert units like grams to metres
+
 def is_it_the_same(type1, type2):
     
     #declaring global variables
@@ -131,7 +137,7 @@ def is_it_the_same(type1, type2):
 
 #it takes in the parameter typeOfUnit, which has 3 significant uses
 
-# if typeOfUnit is 1-6, each number represents a unit type in the SQL tables. The function will
+# if typeOfUnit is 1-5, each number represents a unit type in the SQL tables. The function will
 # then call all rows with that unit type and print it. This is useful because it suggests
 # the second unit the user can input since the second input is limited by the type of the first 
 # unit the user inputted
@@ -148,9 +154,10 @@ def showAllUnits(typeOfUnit):
 
     cursor = db.cursor()
 
-    #
+    #chcking if it's a special case like calling all the units or a random suggestion
     if typeOfUnit >= 7:
 
+        #selects all units with their
         show_all = """SELECT unit_name, Unit_type.type_name
                     FROM Units 
                     JOIN Unit_type ON Units.unit_type = Unit_type.id
@@ -193,12 +200,13 @@ def showAllUnits(typeOfUnit):
             for value, value1 in results:
 
                 print(f"Unit: {value}    | Type: {value1}")
-    
-        typeOfUnit == 8
 
 
-    
+    #if the parameter is 1-5, which calls for one of the five types units can have
+    #this is for the second unit input to show the users some units fo teh saem type they can use
     else:
+
+        #selecting units by matching their type id with the parameter
         show_some = """SELECT unit_name, Unit_type.type_name
                     FROM Units 
                     JOIN Unit_type ON Units.unit_type = Unit_type.id
@@ -207,6 +215,7 @@ def showAllUnits(typeOfUnit):
     
         cursor.execute(show_some, (typeOfUnit,))
         
+        #fteching the data
         results = cursor.fetchall()
 
         #prints the results
@@ -220,36 +229,51 @@ def showAllUnits(typeOfUnit):
 
 
 
+
+
 #user menu
+#this is where the user can choose to do different things
+#it can be called by typing menu
+
 def menu():
 
-    #variable for loop for user input
+    #variable for loop for user input to catch any invalid inputs
     menu_loop = False
 
+    #showing users the options
     menu_answer = cool_input("\n(a) How to use?\n(b) Convert Units \n(c) See all units\n(d) Conversion history \n(e) Exit\n\n")
 
+    #big loop with lots of actions you can choose to take
     while not menu_loop:
+
+        #this activates the calc_units function which will calculate units
         if menu_answer == "b":
 
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
             calc_units()
+
+            #returning to menu
             menu()
             
-        
+        #This shows the list of units the user can use
         elif menu_answer == "c":
 
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
             showAllUnits(7)
+
+            #returning to menu
             menu()
             
-        
+        #this option activates the history function
+        #it will input 'No history available' if there is no history
         elif menu_answer == "d":
 
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
 
+            #checking if tehre are values in the history dictionary
             if history_dict:
 
                 print("\nHistory\n")
@@ -257,12 +281,15 @@ def menu():
                 for key, information in history_dict.items():
                     print(str(key) + " | " + information[0] + " | " + information[1] + " | " + str(information[2]) + " | " + str(information[3]))
 
+            #if there are no values in the history dictionary
             else:
                 print("\nNo history avaliable\n")
 
+            #returning to menu
             menu()
             
         
+        #this option informs the user on how to use this application
         elif menu_answer == "a":
 
             #stopping the loop that was catching the invalid inputs
@@ -289,28 +316,53 @@ def menu():
                     going_back = cool_input("\nPlease type menu to go back or exit to stop the program:")
             
 
+        #this option will stop the program
         elif menu_answer == "e":
             print("\nExiting Program...thank you for using the Units Converter!\n")
+
+            #exiting
             sys.exit()
 
-            
+        #if the user did not choose any of the options above
         else:
-            print("\nplease choose a valid answer because you made Barry sad.")
+            print("\nplease choose a valid answer.")
+
+            #shows the menu again
             menu()
+
+
 
         
 
 
 
+#this function detects if the user typed exit or menu, which will then perform these actions
 def cool_input(prompt):
+
+    #making the user input lowercase and removing whitespace behind it
     user_input = input(prompt).lower().strip()
+
+    #if the user typed exit
     if user_input == "exit":
         print("\nExiting Program...thank you for using the Units Converter!\n")
+
+        #stops program
         sys.exit()
+    
+    #if user typed meu
     elif user_input == "menu":
+
+        #goes to menu
         menu()
+
+    #not a special input
     else:
         return user_input
+
+
+
+
+
 
 
 # the function history(unit1, unit2, inputNum, outputNum) stores the past conversions the user
@@ -329,6 +381,7 @@ history_dict = {}
 
 def history(unit1, unit2, inputNum, outputNum):
 
+    #making the variable counting_number accessible
     global counting_number
 
     #putting the data in a list
@@ -342,32 +395,57 @@ def history(unit1, unit2, inputNum, outputNum):
 
 
 
+
+
+
+
+#suggests units close to the user's input if tehir input is invalid
+
+#makes the program frinedly for dyslexic people
+
 def didYouMean(inputUnit):
+
     db = sqlite3.connect('units_converter.db')
 
     cursor = db.cursor()
 
+    #selecting everything from units table
     code = """SELECT unit_name 
               FROM Units"""
     
     cursor.execute(code)
 
+    #list of all the units
     unit_list = cursor.fetchall()
     
+    #this is a new list to store data after the data from unit_list is stripped
     new_list = []
 
+    #stripping the brackets around the data in the unit_list
     for sub_list in unit_list:
+
         for unit in sub_list:
+
+            #adding unit to new_list
             new_list.append(unit)
 
+    #using difflib
+    #this is the most important part of this function
+    #this gives close matches based on an accuracy you can change
+    #gives you 5 suggestions of units similar to the input
 
     suggestions = difflib.get_close_matches(inputUnit, new_list, n=5, cutoff= 0.6)
 
-    if len(suggestions) != 0:
 
+    #checking if there are suggestions
+    if len(suggestions) != 0:
+        
+        #Printing the 'did you mean'
         print("\nDid you mean:")
         for unit in suggestions:
             print(" - " + unit )
+    
+    #if there are no suggestions found
     else:
         print("\nNo suggestions found D:")
 
@@ -400,6 +478,7 @@ def calc_units():
                 print("\nPlease enter a valid number\n")
                 is_number = False
 
+        #if the user enters not a numebr but letters or symbols
         except ValueError:
             print("\nPlease enter a valid value\n")
 
@@ -425,6 +504,8 @@ def calc_units():
             break
         else:
             print("\nPlease enter a valid unit\n")
+
+            #checking if the user forgot how to spell a unit
             didYouMean(start_unit)
     
     didIthappen2 = False
@@ -455,18 +536,30 @@ def calc_units():
 
         else:
             print("\nPlease enter a valid unit\n")
+
+            #checking if the user forgot how to spell a unit
             didYouMean(end_unit)
     
     #converting the input
     convert(number, start_unit, end_unit)
     
+    #checking if the user wants to calculate units again
     restart = cool_input("\nPress 'r' to convert again or type anything to go back to menu: ")
 
+    #if they wanted to restart
     if restart == "r":
         calc_units()
+
+    #if they didn't want to restart
     else:
         menu()
     
+
+
+
+
+
+
 #main
 if __name__ == "__main__":
 
