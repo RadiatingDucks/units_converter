@@ -10,6 +10,12 @@ import random
 import difflib
 
 
+#This is a function that converts units using a database with the conversion values. 
+
+#When all the parameters are valid the sql code will output the value of unit1 but with the unit of unit2
+
+# In def convert(num, unit1, unit2), num is the input number, unit1 is the unit being converted, and 
+# unit2 is the unit unit1 is being converted to. 
 
 def convert(num, unit1, unit2):
     #connecting database
@@ -28,23 +34,34 @@ def convert(num, unit1, unit2):
     cursor.execute(convert_si, (num, unit1, unit1, unit2, unit2))
 
     #fetching the answer :D
+    #this is in a for loop since it removes the brackets around the output
     for ans in cursor.fetchone():
         info = ans
 
     #prints the answer
     print(f"\n{num} {unit1}(s) is equal to {info} {unit2}(s)!")
 
+    #storing this conversion
     history(unit1, unit2, num, info)
 
     #closing the database
     db.close()
 
 
+
+
+
+
+
+#This function checks if the user input is actually in the database.
+
+#If the user input is in the database then the function will find its type and store it,
+# and return the boolean True
+
+#If the user input is not in the database the function will return False
+
 #variable that stores unit types
 unit_type = None
-
-
-
 
 def is_it_valid(inputFromUser):
     #allowing to modify unit1_type in the function
@@ -233,10 +250,15 @@ def menu():
             #stopping the loop that was catching the invalid inputs
             menu_loop = True
 
-            print("\nHistory\n")
+            if history_dict:
 
-            for key, information in history_dict.items():
-                print(str(key) + " | " + information[0] + " | " + information[1] + " | " + str(information[2]) + " | " + str(information[3]))
+                print("\nHistory\n")
+
+                for key, information in history_dict.items():
+                    print(str(key) + " | " + information[0] + " | " + information[1] + " | " + str(information[2]) + " | " + str(information[3]))
+
+            else:
+                print("\nNo history avaliable\n")
 
             menu()
             
@@ -338,7 +360,6 @@ def didYouMean(inputUnit):
         for unit in sub_list:
             new_list.append(unit)
 
-    print(new_list)
 
     suggestions = difflib.get_close_matches(inputUnit, new_list, n=5, cutoff= 0.6)
 
@@ -431,12 +452,20 @@ def calc_units():
                 break
             else:
                 print("\nPlease use a unit that is the same type as the unit you want to convert\n")
+
         else:
             print("\nPlease enter a valid unit\n")
+            didYouMean(end_unit)
     
     #converting the input
     convert(number, start_unit, end_unit)
-    menu()
+    
+    restart = cool_input("\nPress 'r' to convert again or type anything to go back to menu: ")
+
+    if restart == "r":
+        calc_units()
+    else:
+        menu()
     
 #main
 if __name__ == "__main__":
